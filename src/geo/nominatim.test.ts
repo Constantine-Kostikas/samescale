@@ -24,7 +24,7 @@ const memoryStorage = () => {
 const jsonResponse = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status })
 
 const setup = (fetchImpl: typeof fetch) => {
-  const sleep = vi.fn(async () => {})
+  const sleep = vi.fn(async (_ms: number) => {})
   let clock = 0
   const client = createNominatimClient({
     fetch: fetchImpl,

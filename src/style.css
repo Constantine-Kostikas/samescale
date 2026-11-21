@@ -11,3 +11,52 @@ body {
   font-family: ui-sans-serif, system-ui, sans-serif;
   color: #0f172a;
 }
+
+@theme {
+  --color-paper: #eef2f1;
+  --color-ink: #1b2b3a;
+  --color-ink-soft: #536373;
+  --color-line: #d3dbdc;
+  --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer components {
+  .btn,
+  .btn-primary {
+    @apply shrink-0 rounded-lg border px-3 py-2 text-[0.9rem] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-45;
+  }
+  .btn {
+    @apply border-line bg-white text-ink hover:border-ink;
+  }
+  .btn-primary {
+    @apply border-ink bg-ink text-white hover:bg-[#2a3f52];
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-1 text-[0.85rem] hover:border-ink;
+  }
+  .swatch {
+    @apply inline-block size-2.5 rounded-full;
+  }
+  .link {
+    @apply underline-offset-2 hover:text-ink hover:underline;
+  }
+  .unit {
+    @apply rounded px-2.5 py-1 font-medium text-ink-soft;
+  }
+  .unit-active {
+    @apply bg-ink text-white;
+  }
+  .area,
+  .comparison {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.maplibregl-ctrl-attrib {
+  font-family: var(--font-sans);
+}

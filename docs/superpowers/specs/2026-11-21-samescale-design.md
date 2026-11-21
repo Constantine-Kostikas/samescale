@@ -50,14 +50,15 @@ The owner chose 1, with 3's bundled presets as fallback.
 
 - **Map:** MapLibre GL JS v5 with globe projection, OpenFreeMap "liberty" style.
 - **Search:** Nominatim `/search` with `format=jsonv2`, `polygon_geojson=1`, and a `polygon_threshold` to simplify the geometry. Keep only results whose geometry is a Polygon or MultiPolygon. Point-only results show as "no boundary available". The user picks from up to 5 results.
-- **Presets:** about 30 well-known cities and areas across many latitudes (mix of capitals, famous districts, islands). Fetched once by a build-time script from Nominatim, simplified, and committed as static GeoJSON. Not fetched at runtime.
+- **Presets:** about 25 well-known cities and areas across many latitudes (mix of capitals, famous districts, islands). Fetched once by a build-time script from Nominatim, simplified, and committed as static GeoJSON. Not fetched at runtime. Coastal places whose OSM boundary includes territorial waters are left out (Monaco, Malta, Singapore, Hong Kong, San Francisco). Iceland and Greenland come from Natural Earth land polygons instead.
+- **Comparison sentence:** compares the pair you last placed or dragged together (dragged shape and its nearest neighbor), falling back to the two most recently added.
 
 ## Builder's calls (Claude's proposals, owner can override)
 
 - **Stack:** Vue 3 + TypeScript + Vite + Tailwind CSS 4, npm. Matches the owner's other projects.
 - **True-size move algorithm:** for each vertex, compute geodesic distance and bearing from the shape's original centroid, then place it at the same distance and bearing from the new centroid (Turf `distance`, `bearing`, `destination`). This is exactly a rigid rotation of the sphere that keeps north-up, so area is preserved for shapes of any size. Alternative considered: a plain great-circle rotation (also rigid, but the shape tilts away from north-up, which makes comparisons harder to read).
 - **Rendering accuracy:** MapLibre draws polygon edges as straight lines in Mercator space, not great-circle arcs. After each move, densify edges longer than a threshold (e.g. 10 km) so large shapes render at their true area. Clamp the target centroid away from the poles, where bearings are undefined.
-- **Drawing:** Terra Draw (MapLibre adapter) for drawing a polygon.
+- **Drawing:** a small built-in click-to-add-points tool (Enter or double-click to finish, Backspace to undo, Escape to cancel). Chosen over Terra Draw during the build to avoid an extra dependency and globe-projection risk.
 - **Dragging:** custom pointer handling on the shape's fill layer. While dragging, the map pan is disabled and the shape is re-projected each frame against the cursor position.
 - **Share link:** URL hash holds a compact list of shapes. Searched shapes store their OSM type and ID plus current centroid. Presets store their preset ID plus centroid. Drawn shapes store an encoded polyline. On load, OSM shapes are re-fetched through Nominatim `/lookup` (respecting the rate limit and cache).
 - **Testing:** Vitest unit tests for the move algorithm (area preserved within 0.01% when moving city- and country-sized shapes from 38°N to 60°N and to the equator; centroid lands where requested; pole clamping) and for share-link encode and decode. Manual check in the browser for interaction.

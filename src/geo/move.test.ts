@@ -43,8 +43,8 @@ describe('moveGeometry', () => {
   it('keeps north-up orientation: the northern edge stays north of the southern edge', () => {
     const moved = moveGeometry(athensLike, shapeCenter(athensLike), [-58.4, -34.6]) as Polygon
     const ring = moved.coordinates[0]!
-    expect(ring[2]![1]).toBeGreaterThan(ring[1]![1])
-    expect(ring[1]![0]).toBeGreaterThan(ring[0]![0])
+    expect(ring[2]![1]!).toBeGreaterThan(ring[1]![1]!)
+    expect(ring[1]![0]!).toBeGreaterThan(ring[0]![0]!)
   })
 
   it('keeps coordinates continuous across the antimeridian', () => {
