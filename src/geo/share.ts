@@ -10,6 +10,8 @@ interface WireEntry {
   c: [number, number]
 }
 
+const DRAWN_PRECISION = 6
+
 const round5 = (value: number) => Math.round(value * 1e5) / 1e5
 
 const toBase64Url = (text: string) => {
@@ -32,7 +34,7 @@ const toWire = ({ source, center, name }: ShareEntry): WireEntry => {
       return { p: source.presetId, c }
     case 'drawn':
       // polyline encodes [lat, lon]
-      return { d: polyline.encode(source.outline.map(([lon, lat]) => [lat!, lon!])), n: name, c }
+      return { d: polyline.encode(source.outline.map(([lon, lat]) => [lat!, lon!]), DRAWN_PRECISION), n: name, c }
   }
 }
 
@@ -53,7 +55,7 @@ const fromWire = (raw: unknown): ShareEntry | null => {
     return { source: { kind: 'preset', presetId: wire.p }, center }
   }
   if (typeof wire.d === 'string') {
-    const outline = polyline.decode(wire.d).map(([lat, lon]): Position => [lon, lat])
+    const outline = polyline.decode(wire.d, DRAWN_PRECISION).map(([lat, lon]): Position => [lon, lat])
     if (outline.length < 4) return null
     return { source: { kind: 'drawn', outline }, center, name: typeof wire.n === 'string' ? wire.n : undefined }
   }

@@ -155,9 +155,11 @@ const shareLink = async () => {
 }
 
 let hashTimer: ReturnType<typeof setTimeout> | undefined
+let restoring = false
 watch(
   shareEntries,
   (entries) => {
+    if (restoring) return
     clearTimeout(hashTimer)
     hashTimer = setTimeout(() => {
       const url = entries.length ? `#s=${encodeShare(entries)}` : location.pathname + location.search
@@ -191,6 +193,8 @@ const restoreFromHash = async () => {
   if (!match) return
   const entries = decodeShare(match[1]!)
   let failed = 0
+  // Keep the original link intact until restoring finishes, so shapes that fail to load aren't dropped from it.
+  restoring = true
   for (const entry of entries) {
     try {
       if (!(await restoreEntry(entry))) failed += 1
@@ -198,6 +202,7 @@ const restoreFromHash = async () => {
       failed += 1
     }
   }
+  restoring = false
   if (failed > 0) showNotice(`${failed} shape${failed === 1 ? '' : 's'} from the link couldn't be loaded.`, 8000)
   if (shapes.value.length) setTimeout(() => mapView.value?.focus(shapes.value), 300)
 }

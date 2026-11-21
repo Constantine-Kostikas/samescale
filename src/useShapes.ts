@@ -55,6 +55,7 @@ export const useShapes = () => {
 
   const remove = (id: string) => {
     shapes.value = shapes.value.filter((shape) => shape.id !== id)
+    movedCache.delete(id)
   }
 
   const isAway = (shape: Shape) =>
@@ -75,7 +76,16 @@ export const useShapes = () => {
       .reduce<Shape | undefined>((best, other) => (!best || distance(other) < distance(best) ? other : best), undefined)
   }
 
-  const geometryOf = (shape: Shape): AreaGeometry => moveGeometry(shape.base, shape.baseCenter, shape.center)
+  const movedCache = new Map<string, { key: string; geometry: AreaGeometry }>()
+
+  const geometryOf = (shape: Shape): AreaGeometry => {
+    const key = `${shape.center[0]},${shape.center[1]}`
+    const cached = movedCache.get(shape.id)
+    if (cached?.key === key) return cached.geometry
+    const geometry = moveGeometry(shape.base, shape.baseCenter, shape.center)
+    movedCache.set(shape.id, { key, geometry })
+    return geometry
+  }
 
   const shareEntries = computed<ShareEntry[]>(() =>
     shapes.value.map((shape) => ({

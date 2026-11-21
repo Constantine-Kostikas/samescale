@@ -140,6 +140,9 @@ const startDrag = (event: MapLayerMouseEvent | MapLayerTouchEvent) => {
   event.preventDefault()
   drag = { id: shape.id, startCenter: shape.center, grab: toPosition(event.lngLat) }
   map!.getCanvas().style.cursor = 'grabbing'
+  window.addEventListener('mouseup', endDrag)
+  window.addEventListener('touchend', endDrag)
+  window.addEventListener('touchcancel', endDrag)
 }
 
 const continueDrag = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent) => {
@@ -148,6 +151,9 @@ const continueDrag = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent
 }
 
 const endDrag = () => {
+  window.removeEventListener('mouseup', endDrag)
+  window.removeEventListener('touchend', endDrag)
+  window.removeEventListener('touchcancel', endDrag)
   if (!drag || !map) return
   drag = null
   map.getCanvas().style.cursor = ''
@@ -160,9 +166,6 @@ const registerInteractions = (target: maplibregl.Map) => {
   })
   target.on('mousemove', continueDrag)
   target.on('touchmove', continueDrag)
-  target.on('mouseup', endDrag)
-  target.on('touchend', endDrag)
-  target.on('touchcancel', endDrag)
   target.on('mouseenter', 'shapes-fill', () => {
     if (!drag && !props.drawing) target.getCanvas().style.cursor = 'grab'
   })
@@ -197,7 +200,10 @@ onMounted(() => {
   })
 })
 
-onBeforeUnmount(() => map?.remove())
+onBeforeUnmount(() => {
+  endDrag()
+  map?.remove()
+})
 
 watch(
   () => props.shapes.map((shape) => [shape.id, shape.name, shape.color, shape.center[0], shape.center[1]].join('|')).join(';'),
