@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "samescale",
   "compatibility_date": "2026-11-22",
+  "routes": [{ "pattern": "samescale.planiverse.dev", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"

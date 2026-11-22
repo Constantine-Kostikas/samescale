@@ -3,3 +3,4 @@ dist/
 .worktrees/
 *.local
 .DS_Store
+*.tsbuildinfo
