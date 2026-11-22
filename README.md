@@ -19,13 +19,13 @@ npm run build      # type-check and build to dist/
 npm run presets    # refetch bundled preset boundaries (Nominatim + Natural Earth)
 ```
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare
 
-Fully static, no server or API keys.
+Fully static, no server or API keys. Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc` serves `dist/`), connected to this GitHub repo so every push to `main` deploys.
 
 - Build command: `npm run build`
-- Output directory: `dist`
-- Node version: 22 or newer
+- Deploy command: `npx wrangler deploy`
+- Node version: 22 (from `.node-version`)
 
 ## How true-size moving works
 
