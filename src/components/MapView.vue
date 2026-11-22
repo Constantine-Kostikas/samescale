@@ -6,6 +6,7 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { dragTarget, type AreaGeometry } from '../geo/move'
 import type { Shape } from '../geo/types'
+import libertyStyle from '../map/liberty-style.json'
 
 const props = defineProps<{
   shapes: Shape[]
@@ -22,7 +23,6 @@ const emit = defineEmits<{
 
 maplibregl.setWorkerUrl(workerUrl)
 
-const STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty'
 const container = ref<HTMLDivElement>()
 const ready = ref(false)
 let map: maplibregl.Map | null = null
@@ -185,7 +185,7 @@ const registerInteractions = (target: maplibregl.Map) => {
 onMounted(() => {
   map = new maplibregl.Map({
     container: container.value!,
-    style: STYLE_URL,
+    style: libertyStyle as maplibregl.StyleSpecification,
     center: [15, 45],
     zoom: 3,
     attributionControl: { compact: true },
