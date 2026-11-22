@@ -4,7 +4,7 @@ Compare the true size of cities, districts, and countries. Web maps use the Merc
 
 **Live at [samescale.planiverse.dev](https://samescale.planiverse.dev).**
 
-Built with Vue 3, MapLibre GL, Turf, and Tailwind CSS. Fully static, hosted on Cloudflare Workers.
+Built with Vue 3, MapLibre GL, Turf, and Tailwind CSS. Fully static, with no server or API keys.
 
 ## Features
 
@@ -22,14 +22,6 @@ npm test           # unit tests (Vitest)
 npm run build      # type-check and build to dist/
 npm run presets    # refetch bundled preset boundaries (Nominatim + Natural Earth)
 ```
-
-## Deploying to Cloudflare
-
-Fully static, no server or API keys. Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc` serves `dist/` on the custom domain `samescale.planiverse.dev`), connected to this GitHub repo so every push to `main` deploys.
-
-- Build command: `npm run build`
-- Deploy command: `npx wrangler deploy`
-- Node version: 22 (from `.node-version`)
 
 ## How true-size moving works
 

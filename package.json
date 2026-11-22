@@ -18,8 +18,7 @@
     "maplibre",
     "geojson",
     "openstreetmap",
-    "vue",
-    "cloudflare-workers"
+    "vue"
   ],
   "type": "module",
   "scripts": {
