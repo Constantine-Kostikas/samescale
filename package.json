@@ -2,6 +2,24 @@
   "name": "samescale",
   "private": true,
   "version": "0.1.0",
+  "description": "Compare the true size of cities, regions, and countries by moving their outlines across the globe.",
+  "homepage": "https://samescale.planiverse.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Constantine-Kostikas/samescale.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Constantine-Kostikas/samescale/issues"
+  },
+  "keywords": [
+    "map",
+    "true-size",
+    "mercator",
+    "maplibre",
+    "geojson",
+    "openstreetmap",
+    "vue"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

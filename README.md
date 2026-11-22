@@ -2,6 +2,10 @@
 
 Compare the true size of cities, districts, and countries. Web maps use the Mercator projection, which stretches places near the poles. Same Scale moves outlines across the globe with an exact rotation of the sphere, so a shape keeps its real size wherever you drop it.
 
+**Live at [samescale.planiverse.dev](https://samescale.planiverse.dev).**
+
+Built with Vue 3, MapLibre GL, Turf, and Tailwind CSS. Fully static, with no server or API keys.
+
 ## Features
 
 - Search any place with a boundary in OpenStreetMap (through Nominatim), or pick a bundled preset.
@@ -18,14 +22,6 @@ npm test           # unit tests (Vitest)
 npm run build      # type-check and build to dist/
 npm run presets    # refetch bundled preset boundaries (Nominatim + Natural Earth)
 ```
-
-## Deploying to Cloudflare
-
-Fully static, no server or API keys. Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc` serves `dist/`), connected to this GitHub repo so every push to `main` deploys.
-
-- Build command: `npm run build`
-- Deploy command: `npx wrangler deploy`
-- Node version: 22 (from `.node-version`)
 
 ## How true-size moving works
 
